@@ -1,15 +1,16 @@
 const express = require("express");
 // const app = express();
 const mongoose = require("mongoose");
+
 const dotenv = require("dotenv");
 const colors = require("colors");
 const http = require("http");
 const helmet = require("helmet");
 const morgan = require("morgan");
-
+const nodemailer = require("nodemailer");
 const multer = require("multer");
 const userRoute = require("./routes/users");
-
+const nodemailerRoute = require("./routes/nodemailer");
 const authRoute = require("./routes/auth");
 const eventPostRoute = require("./routes/eventPost");
 const projectsRoute = require("./routes/projects");
@@ -45,9 +46,9 @@ const server = http.createServer(app);
 //
 
 ////
-if (process.env.NODE.ENV === "development") {
-  app.use(morgan("dev"));
-}
+// if (process.env.NODE.ENV === "development") {
+//   app.use(morgan("dev"));
+// }
 //
 // Db config
 const db = config.get("mongoURI");
@@ -80,6 +81,7 @@ app.use(morgan("common"));
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/sendMail", nodemailerRoute);
 app.use("/api/posts", eventPostRoute);
 app.use("/api/projects", projectsRoute);
 app.use("/api/announcement", announcementRoute);
@@ -87,6 +89,7 @@ app.use("/api/tribute", tributeRoute);
 app.use("/api/calender", calenderRoute);
 app.use("/api/hallfame", hallFameRoute);
 app.use("/api/businessAdvert", businessAdvertRoute);
+
 // app.use("/api/match", gameFixturesRoute);
 // app.use("/api/teams", teamRoute);
 // app.use("/api/officials", officialsRoute);
